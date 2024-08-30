@@ -6,328 +6,86 @@ https://canary.ebznz.com/
 
 Canary Framework
 Canary is a PHP framework designed for efficient data handling and database operations. This README provides a comprehensive guide on how to use the Canary framework, including its installation, configuration, and features.
+1. **__construct()**
+   - *وصف:* الدالة البانية للفئة. تستخدم لتحضير أي إعدادات أو متغيرات تحتاج إليها الفئة عند الإنشاء.
 
-Table of Contents
-Introduction
-Requirements
-Installation
-Usage
-Features
-Data Handling
-Database Operations
-Token Management
-Versioning
-Maintenance
-Validation
-Examples
-Contributing
-License
-Introduction
-The Canary framework is designed to simplify PHP development by providing a set of tools for handling HTTP requests, managing tokens, and interacting with databases. It aims to streamline the development process and improve code maintainability.
+2. **var($var)**
+   - *وصف:* تعيد قيمة متغير عالمي بناءً على الاسم الذي تم تمريره كمعامل.
 
-Requirements
-PHP 7.4 or higher
-MySQL or MariaDB
-Composer (for dependency management, if needed)
-Installation
-To install the Canary framework, follow these steps:
+3. **SET($var, $val)**
+   - *وصف:* تقوم بتعيين قيمة معينة لمتغير داخل المصفوفة العامة $GLOBALS['canary'].
 
-Download the framework: Clone or download the Canary repository.
+4. **GET()**
+   - *وصف:* تجمع البيانات المرسلة عبر طريقة GET، وتقوم بمعالجتها وإرجاعها ككائن JSON. تسجل أيضًا نجاح أو فشل جمع البيانات.
 
-bash
-Copy code
-git clone https://github.com/yourusername/canary.git
-Include the framework: Require the lib/main.php in your project to use Canary.
+5. **POST()**
+   - *وصف:* تجمع البيانات المرسلة عبر طريقة POST، وتقوم بمعالجتها وإرجاعها ككائن JSON. تسجل أيضًا نجاح أو فشل جمع البيانات.
 
-php
-Copy code
-require 'path/to/canary/lib/main.php';
-Configure the database connection: Ensure that the lib/main.php includes your database configuration.
+6. **REQUEST()**
+   - *وصف:* تجمع البيانات المرسلة عبر أي طريقة (GET, POST, إلخ.) باستخدام $_REQUEST، وتقوم بمعالجتها وإرجاعها ككائن JSON. تسجل أيضًا نجاح أو فشل جمع البيانات.
 
-Usage
-Basic Setup
-To use Canary in your PHP project, include the framework and configure it as needed.
+7. **REQUESTW()**
+   - *وصف:* تجمع البيانات المرسلة عبر $_REQUEST، ولكنها لا تقوم بتسجيل أو طباعة أي شيء. تعيد البيانات فقط ككائن JSON.
 
-php
-Copy code
-require 'path/to/canary/lib/main.php';
+8. **ENV($var = null)**
+   - *وصف:* تعيد قيمة متغير بيئة محدد إذا تم تمرير اسم المتغير كمعامل، أو تعيد جميع المتغيرات البيئية إذا لم يتم تمرير أي شيء.
 
-// Example usage
-$canary = new CANARY();
-Data Handling
-Canary provides methods to handle HTTP GET, POST, and REQUEST data.
+9. **sendOTPEmail($toEmail, $otp)**
+   - *وصف:* ترسل رسالة بريد إلكتروني تحتوي على رمز OTP (رمز التحقق) إلى البريد الإلكتروني المحدد باستخدام إعدادات البريد المخزنة في المتغيرات البيئية.
 
-GET Data:
+10. **sendOTPWhatsApp($toWhatsapp, $otp)**
+    - *وصف:* ترسل رسالة تحتوي على رمز OTP إلى رقم WhatsApp المحدد باستخدام واجهة برمجة تطبيقات WhatsApp.
 
-php
-Copy code
-$data = CANARY::GET();
-POST Data:
+11. **sendFCM($deviceToken, $title, $body, $image = null)**
+    - *وصف:* ترسل إشعارًا باستخدام Firebase Cloud Messaging إلى جهاز محدد بناءً على رمز الجهاز (device token).
 
-php
-Copy code
-$data = CANARY::POST();
-REQUEST Data:
+12. **getLang()**
+    - *وصف:* تعيد اللغة الحالية المستخدمة في النظام بناءً على متغير lang المخزن في مصفوفة canary.
 
-php
-Copy code
-$data = CANARY::REQUEST();
-Database Operations
-Canary supports various SQL operations:
+13. **getToken()**
+    - *وصف:* تعيد رمز التحقق (token) المخزن في مصفوفة canary.
 
-SELECT:
+14. **checkToken($dbtbl, $dbtoken = null, $dbexpier = null)**
+    - *وصف:* تتحقق من صحة الرمز المميز (token) باستخدام قاعدة بيانات محددة. يمكنها أيضًا التحقق من صلاحية الرمز المميز بناءً على تاريخ انتهاء صلاحيته.
 
-php
-Copy code
-$result = CANARY::SELECT('table_name');
-INSERT:
+15. **VERSION($minVersion, $lastVersion, $lastVersionName)**
+    - *وصف:* تتحقق من إصدار التطبيق الحالي وتفرض تحديثًا إذا كان الإصدار أقدم من الإصدار الأدنى المحدد.
 
-php
-Copy code
-$result = CANARY::INSERT('table_name (column1, column2) VALUES (value1, value2)');
-UPDATE:
+16. **MAINTENANCE($maintenance = null)**
+    - *وصف:* تعرض رسالة صيانة إذا كان النظام في حالة صيانة بناءً على القيمة الممررة.
 
-php
-Copy code
-$result = CANARY::UPDATE('table_name SET column1 = value1 WHERE condition');
-DELETE:
+17. **allowedReport()**
+    - *وصف:* دالة تستدعي دالة allowedReport() (غير موضحة في الكود، قد تكون خارج الفئة).
 
-php
-Copy code
-$result = CANARY::DELETE('table_name WHERE condition');
-Token Management
-Canary provides functionality to manage and verify tokens:
+18. **allowedDoctor()**
+    - *وصف:* دالة تستدعي دالة allowedDoctor() (غير موضحة في الكود، قد تكون خارج الفئة).
 
-Get Token:
+19. **doctor()**
+    - *وصف:* تقوم بتفعيل وضع "Doctor" الذي يسمح بعرض تقارير مفصلة أثناء تشغيل الدوال.
 
-php
-Copy code
-$token = CANARY::getToken();
-Check Token:
+20. **doctori()**
+    - *وصف:* تقوم بتفعيل وضع "Doctor Info" الذي يعرض معلومات إضافية ضمن تقارير الوضع Doctor.
 
-php
-Copy code
-$result = CANARY::checkToken('table_name', 'token_column');
-Versioning
-Ensure users are running the correct version of your application:
+21. **listening($res, $data = null)**
+    - *وصف:* تسجل رسالة نجاح إلى السجل مع إمكانية تسجيل بيانات إضافية إذا كانت وضعية doctor أو doctori مفعلة.
 
-php
-Copy code
-CANARY::VERSION('1.0.0', '1.2.0', 'Version 1.2.0');
-Maintenance
-Notify users of maintenance periods:
+22. **listeninge($res, $data = null)**
+    - *وصف:* تسجل رسالة فشل إلى السجل مع إمكانية تسجيل بيانات إضافية إذا كانت وضعية doctor أو doctori مفعلة.
 
-php
-Copy code
-CANARY::MAINTENANCE(30); // Maintenance for 30 minutes
-Validation
-Validate various data types with Canary's validation methods:
+23. **export($jsonMsg, $code = null, $data = null, $jsonMsgAr = null)**
+    - *وصف:* تصدير رسالة JSON مع رمز حالة HTTP وبيانات إضافية (قد تشير إلى دالة خارجية export()).
 
-String:
+24. **conn()**
+    - *وصف:* تعيد اتصال قاعدة البيانات المخزن في مصفوفة canary.
 
-php
-Copy code
-CANARY::VALIDATE($data, 'string');
-Email:
+25. **SQL($sql)**
+    - *وصف:* تنفذ استعلام SQL عام وتعيد النتائج. تسجل أيضًا نجاح أو فشل الاستعلام.
 
-php
-Copy code
-CANARY::VALIDATE($data, 'email');
-Examples
-Example 1: Basic Data Retrieval
-php
-Copy code
-require 'path/to/canary/lib/main.php';
+26. **SELECT($sql)**
+    - *وصف:* تنفذ استعلام SQL من نوع SELECT وتعيد النتائج. تسجل أيضًا نجاح أو فشل الاستعلام.
 
-$data = CANARY::GET();
-print_r($data);
-Example 2: Database Query
-php
-Copy code
-require 'path/to/canary/lib/main.php';
+27. **SELECTW($sql)**
+    - *وصف:* تنفذ استعلام SELECT دون تسجيل أو طباعة أي شيء، وتعيد النتائج فقط.
 
-$result = CANARY::SELECT('users WHERE id = 1');
-print_r($result);
-Contributing
-We welcome contributions to the Canary framework. If you have any improvements or bug fixes, please fork the repository and submit a pull request.
-
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-Feel free to modify this template according to your specific needs and project structure. If you need additional sections or more detailed explanations for certain features, let me know!
-
-
-
-
-
-Canary Framework Documentation
-The Canary Framework provides a set of utility functions that streamline various tasks in PHP. Below is a description of each function available in the CANARY class.
-
-1. var($var)
-Description: Retrieves a global variable from the $GLOBALS array using the provided variable name.
-Parameters:
-$var: The name of the global variable to retrieve.
-Returns: The value of the specified global variable.
-2. SET($var, $val)
-Description: Stores a value in the $GLOBALS['canary'] array under the specified key.
-Parameters:
-$var: The key to set in the $GLOBALS['canary'] array.
-$val: The value to assign to the key.
-Returns: void.
-3. GET()
-Description: Collects data sent via the GET method, sanitizes it, and returns it as a JSON object. It also logs the success or failure of data collection.
-Parameters: None.
-Returns: A JSON object containing the GET data.
-4. POST()
-Description: Similar to the GET() function, but collects data sent via the POST method. The data is sanitized and returned as a JSON object.
-Parameters: None.
-Returns: A JSON object containing the POST data.
-5. REQUEST()
-Description: Collects data sent via the REQUEST method (GET, POST, and other methods combined), sanitizes it, and returns it as a JSON object. Logs the success or failure of data collection.
-Parameters: None.
-Returns: A JSON object containing the REQUEST data.
-6. REQUESTW()
-Description: Collects and sanitizes data sent via the REQUEST method, but does not log the success or failure of data collection. Returns the data as a JSON object.
-Parameters: None.
-Returns: A JSON object containing the REQUEST data.
-7. ENV($var = null)
-Description: Retrieves environment variables from the .env file.
-Parameters:
-$var: The name of the environment variable to retrieve. If null, returns all environment variables.
-Returns: A JSON object containing the specified environment variable or all variables if $var is null.
-8. sendOTPEmail($toEmail, $otp)
-Description: Sends an OTP (One-Time Password) to the specified email address using SMTP settings from the environment variables.
-Parameters:
-$toEmail: The recipient's email address.
-$otp: The OTP to send.
-Returns: void.
-9. sendOTPWhatsApp($toWhatsapp, $otp)
-Description: Sends an OTP to the specified WhatsApp number using the WhatsApp API and settings from the environment variables.
-Parameters:
-$toWhatsapp: The recipient's WhatsApp number.
-$otp: The OTP to send.
-Returns: void.
-10. sendFCM($deviceToken, $title, $body, $image = null)
-markdown
-نسخ الكود
-- **Description**: Sends a Firebase Cloud Messaging (FCM) notification to a specified device.
-- **Parameters**: 
-  - `$deviceToken`: The FCM token of the device.
-  - `$title`: The notification title.
-  - `$body`: The notification body.
-  - `$image`: (Optional) The URL of an image to include in the notification.
-- **Returns**: `void`.
-11. getLang()
-markdown
-نسخ الكود
-- **Description**: Retrieves the language setting stored in the `canary` global array.
-- **Parameters**: None.
-- **Returns**: The current language setting.
-12. getToken()
-markdown
-نسخ الكود
-- **Description**: Retrieves the token stored in the `canary` global array.
-- **Parameters**: None.
-- **Returns**: The current token.
-13. checkToken($dbtbl, $dbtoken = null, $dbexpier = null)
-markdown
-نسخ الكود
-- **Description**: Checks if a provided token is valid by comparing it against tokens in a database table. Logs the result and returns the validation status.
-- **Parameters**: 
-  - `$dbtbl`: The database table to check.
-  - `$dbtoken`: The column in the database that stores tokens.
-  - `$dbexpier`: The column in the database that stores token expiry times.
-- **Returns**: The result of the token check.
-14. VERSION($minVersion, $lastVersion, $lastVersionName)
-markdown
-نسخ الكود
-- **Description**: Checks if the client's application version is up to date. If not, it prompts the user to update.
-- **Parameters**: 
-  - `$minVersion`: The minimum supported version.
-  - `$lastVersion`: The latest version available.
-  - `$lastVersionName`: The name of the latest version.
-- **Returns**: `void`.
-15. MAINTENANCE($maintenance = null)
-markdown
-نسخ الكود
-- **Description**: Forces a maintenance mode message if the system is under maintenance.
-- **Parameters**: 
-  - `$maintenance`: The duration of the maintenance.
-- **Returns**: `void`.
-16. allowedReport()
-markdown
-نسخ الكود
-- **Description**: Calls the `allowedReport()` function to determine if reporting is allowed.
-- **Parameters**: None.
-- **Returns**: `void`.
-17. allowedDoctor()
-markdown
-نسخ الكود
-- **Description**: Calls the `allowedDoctor()` function to determine if the doctor report is allowed.
-- **Parameters**: None.
-- **Returns**: `void`.
-18. doctor()
-markdown
-نسخ الكود
-- **Description**: Enables the doctor report mode and returns the status.
-- **Parameters**: None.
-- **Returns**: The status of the doctor report mode.
-19. doctori()
-markdown
-نسخ الكود
-- **Description**: Enables the doctor-info report mode and returns the status.
-- **Parameters**: None.
-- **Returns**: The status of the doctor-info report mode.
-20. listening($res, $data = null)
-markdown
-نسخ الكود
-- **Description**: Logs successful operations with an optional data payload.
-- **Parameters**: 
-  - `$res`: The message to log.
-  - `$data`: (Optional) Additional data to log.
-- **Returns**: `void`.
-21. listeninge($res, $data = null)
-markdown
-نسخ الكود
-- **Description**: Logs failed operations with an optional data payload.
-- **Parameters**: 
-  - `$res`: The error message to log.
-  - `$data`: (Optional) Additional data to log.
-- **Returns**: `void`.
-22. export($jsonMsg, $code = null, $data = null, $jsonMsgAr = null)
-markdown
-نسخ الكود
-- **Description**: Exports a response message, status code, and optional data to the client.
-- **Parameters**: 
-  - `$jsonMsg`: The message to export.
-  - `$code`: (Optional) The status code to return.
-  - `$data`: (Optional) Additional data to return.
-  - `$jsonMsgAr`: (Optional) An Arabic version of the message.
-- **Returns**: `void`.
-23. conn()
-markdown
-نسخ الكود
-- **Description**: Returns the database connection stored in the `canary` global array.
-- **Parameters**: None.
-- **Returns**: The database connection.
-24. SQL($sql)
-markdown
-نسخ الكود
-- **Description**: Executes a SQL query and logs the results, including the number of rows affected.
-- **Parameters**: 
-  - `$sql`: The SQL query to execute.
-- **Returns**: The result set or `null` if the query fails.
-25. SELECT($sql)
-markdown
-نسخ الكود
-- **Description**: Executes a `SELECT` SQL query and logs the results, including the number of rows retrieved.
-- **Parameters**: 
-  - `$sql`: The SQL `SELECT` query to execute.
-- **Returns**: The result set or `null` if the query fails.
-26. SELECTW($sql)
-sql
-نسخ الكود
-- **Description**: Executes a `SELECT` SQL query with additional WHERE conditions and logs the results.
-- **Parameters**: 
-  - `$sql`: The SQL `SELECT` query with WHERE conditions to execute.
-- **Returns**: The result set or `null` if the query fails.
+28. **SELECT1($sql)**
+    - *وصف:* دالة إضافية لتنفيذ استعلام SELECT وإعادة نتيجة واحدة فقط (باقي الدالة غير مكتملة في الكود).
